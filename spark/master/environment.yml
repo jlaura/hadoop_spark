@@ -1,0 +1,5 @@
+name: kaguyasp
+dependencies:
+        - python=3.6
+        - plio
+        - pysat

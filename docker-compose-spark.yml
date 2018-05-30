@@ -1,0 +1,49 @@
+version: '3'
+services:
+  spark-master:
+    image: jlaura/spark-master:2.2.0-hadoop2.8-hive-java8-python3.6
+    networks:
+      - workbench
+    volumes:
+      - conda:/opt/conda
+    ports:
+      - "50082:8080"
+      - "50077:7077"
+    deploy:
+      replicas: 1
+      mode: replicated
+      restart_policy:
+        condition: on-failure
+      labels:
+        traefik.docker.network: workbench
+        traefik.port: 8080
+    env_file:
+      - ./hadoop.env
+
+  spark-worker:
+    image: jlaura/spark-worker:2.2.0-hadoop2.8-hive-java8-python3.6
+    networks:
+      - workbench
+    volumes:
+      - conda:/opt/conda
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=4G
+    deploy:
+      mode: replicated
+      replicas: 6
+      restart_policy:
+        condition: on-failure
+      labels:
+        traefik.docker.network: workbench
+        traefik.port: 8081
+    env_file:
+      - ./hadoop.env
+
+volumes:
+  conda:
+
+networks:
+  workbench:
+    external: true
