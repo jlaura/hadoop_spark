@@ -33,6 +33,7 @@ services:
       TINI_SUBREAPER: "true"
     volumes:
       - jupyternotebooks:/home/jovyan/work
+      - /work/projects/jaxa02/SP_Level2C/:/kaguya
     networks: 
       - workbench  
     deploy:

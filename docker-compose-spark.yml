@@ -5,7 +5,7 @@ services:
     networks:
       - workbench
     volumes:
-      - conda:/opt/conda
+      - /work/projects/jaxa02/SP_Level2C/:/kaguya
     ports:
       - "50082:8080"
       - "50077:7077"
@@ -25,7 +25,7 @@ services:
     networks:
       - workbench
     volumes:
-      - conda:/opt/conda
+      - /work/projects/jaxa02/SP_Level2C/:/kaguya
     environment:
       - SPARK_MASTER=spark://spark-master:7077
       - SPARK_WORKER_CORES=2
@@ -40,9 +40,6 @@ services:
         traefik.port: 8081
     env_file:
       - ./hadoop.env
-
-volumes:
-  conda:
 
 networks:
   workbench:
