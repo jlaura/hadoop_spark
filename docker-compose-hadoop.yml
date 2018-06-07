@@ -67,13 +67,6 @@ services:
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0 
 
-  impala-d:
-    image:
-    command: sudo service impala-server start
-
-  impala-statestore:
-    image:
-    command: sudo service impala 
 
 volumes:
   datanode:

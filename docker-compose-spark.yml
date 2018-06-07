@@ -1,7 +1,7 @@
 version: '3'
 services:
   spark-master:
-    image: jlaura/spark-master:2.2.0-hadoop2.8-hive-java8-python3.6
+    image: jlaura/spark-master
     networks:
       - workbench
     volumes:
@@ -17,11 +17,13 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 8080
+      placement:
+        constraints: [node.role == manager]
     env_file:
       - ./hadoop.env
 
   spark-worker:
-    image: jlaura/spark-worker:2.2.0-hadoop2.8-hive-java8-python3.6
+    image: jlaura/spark-worker
     networks:
       - workbench
     volumes:
@@ -29,7 +31,7 @@ services:
     environment:
       - SPARK_MASTER=spark://spark-master:7077
       - SPARK_WORKER_CORES=2
-      - SPARK_WORKER_MEMORY=4G
+      - SPARK_WORKER_MEMORY=8G
     deploy:
       mode: replicated
       replicas: 6
@@ -38,8 +40,13 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 8081
+      placement:
+        constraints: [node.role == worker]
     env_file:
       - ./hadoop.env
+    depends_on: 
+      # This does not guarantee that the service is ready, just started
+      - spark-master
 
 networks:
   workbench:
