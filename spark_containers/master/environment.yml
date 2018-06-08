@@ -1,6 +1,9 @@
 name: kaguyasp
 dependencies:
-        - python=3.6
-        - plio
-        - pysat
-        - geopandas
+  - python=3.6
+  - plio
+  - pysat
+  - geopandas
+  - pyarrow
+  - hdfs3
+  - libhdfs3
